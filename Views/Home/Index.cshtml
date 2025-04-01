@@ -1,8 +1,33 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model InstagramDataWebApp.Models.DashboardViewModel
+@{
+    ViewData["Title"] = "Dashboard";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<h1>Instagram Data Dashboard</h1>
+<ul>
+    <li>Synced Contacts: @Model.SyncedContactsCount</li>
+    <li>
+        Blocked Users: @Model.BlockedCount -
+        <a href="@Url.Action("Blocked", "InstagramData")">View Blocked Users</a>
+    </li>
+    <li>
+        Followers: @Model.FollowersCount -
+        <a href="@Url.Action("Followers", "InstagramData")">View Followers</a>
+    </li>
+    <li>
+        Following: @Model.FollowingCount -
+        <a href="@Url.Action("Following", "InstagramData")">View Following</a>
+    </li>
+    <li>
+        Pending Follow Requests: @Model.PendingFollowRequestsCount -
+        <a href="@Url.Action("PendingFollowRequests", "InstagramData")">View Pending</a>
+    </li>
+    <li>
+        Recent Follow Requests: @Model.RecentFollowRequestsCount -
+        <a href="@Url.Action("RecentFollowRequests", "InstagramData")">View Recent Requests</a>
+    </li>
+    <li>
+        Recently Unfollowed: @Model.RecentlyUnfollowedCount -
+        <a href="@Url.Action("RecentlyUnfollowed", "InstagramData")">View Recently Unfollowed</a>
+    </li>
+</ul>

@@ -1,31 +1,24 @@
-using System.Diagnostics;
-using Microsoft.AspNetCore.Mvc;
 using InstagramDataWebApp.Models;
+using InstagramDataWebApp.Services;
+using Microsoft.AspNetCore.Mvc;
 
 namespace InstagramDataWebApp.Controllers;
 
-public class HomeController : Controller
+public class HomeController(InstagramDataService dataService) : Controller
 {
-    private readonly ILogger<HomeController> _logger;
-
-    public HomeController(ILogger<HomeController> logger)
-    {
-        _logger = logger;
-    }
-
     public IActionResult Index()
     {
-        return View();
-    }
+        DashboardViewModel dashboard = new()
+        {
+            SyncedContactsCount = dataService.SyncedContacts?.ContactsContactInfo?.Count ?? 0,
+            BlockedCount = dataService.BlockedProfiles?.RelationshipsBlockedUsers?.Count ?? 0,
+            FollowersCount = dataService.Followers?.Count ?? 0,
+            FollowingCount = dataService.Following?.RelationshipsFollowing.Count ?? 0,
+            PendingFollowRequestsCount = dataService.PendingFollowRequests?.RelationshipsFollowRequestsSent.Count ?? 0,
+            RecentFollowRequestsCount = dataService.RecentFollowRequests?.RelationshipsPermanentFollowRequests.Count ?? 0,
+            RecentlyUnfollowedCount = dataService.RecentlyUnfollowed?.RelationshipsUnfollowedUsers.Count ?? 0
+        };
 
-    public IActionResult Privacy()
-    {
-        return View();
-    }
-
-    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    public IActionResult Error()
-    {
-        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        return View(dashboard);
     }
 }

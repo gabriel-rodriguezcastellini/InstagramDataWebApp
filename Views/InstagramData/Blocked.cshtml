@@ -1,0 +1,30 @@
+﻿@model List<InstagramDataWebApp.Models.BlockedProfile>
+@{
+    ViewData["Title"] = "Blocked Users";
+}
+
+<h1>Blocked Users</h1>
+
+<table border="1" cellpadding="5">
+    <thead>
+        <tr>
+            <th>Username</th>
+            <th>Profile Link</th>
+            <th>Timestamp</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            var link = item.StringListData?.FirstOrDefault();
+            if (link != null)
+            {
+                <tr>
+                    <td>@item.Title</td>
+                    <td><a href="@link.Href" target="_blank">@link.Href</a></td>
+                    <td>@link.Timestamp</td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
