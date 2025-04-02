@@ -15,8 +15,11 @@ namespace InstagramDataWebApp.Services
         public RecentFollowRequests RecentFollowRequests { get; set; } = new RecentFollowRequests { RelationshipsPermanentFollowRequests = [] };
         public RecentlyUnfollowedProfiles RecentlyUnfollowed { get; set; } = new RecentlyUnfollowedProfiles { RelationshipsUnfollowedUsers = [] };
 
-        public InstagramDataService(IWebHostEnvironment env)
+        private readonly ILogger<InstagramDataService> _logger;
+
+        public InstagramDataService(IWebHostEnvironment env, ILogger<InstagramDataService> logger)
         {
+            _logger = logger;
             DataFolderPath = Path.Combine(env.ContentRootPath, "Data");
             LoadData();
         }
@@ -36,9 +39,14 @@ namespace InstagramDataWebApp.Services
                         SyncedContacts = deserialized;
                     }
                 }
+                else
+                {
+                    _logger.LogWarning("File not found: synced_contacts.json in {DataFolderPath}", DataFolderPath);
+                }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                _logger.LogError(ex, "Error loading synced_contacts.json");
             }
 
             try
@@ -53,8 +61,15 @@ namespace InstagramDataWebApp.Services
                         BlockedProfiles = deserialized;
                     }
                 }
+                else
+                {
+                    _logger.LogWarning("File not found: blocked_profiles.json in {DataFolderPath}", DataFolderPath);
+                }
             }
-            catch { }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error loading blocked_profiles.json");
+            }
 
             try
             {
@@ -68,8 +83,15 @@ namespace InstagramDataWebApp.Services
                         Followers = deserialized;
                     }
                 }
+                else
+                {
+                    _logger.LogWarning("File not found: followers_1.json in {DataFolderPath}", DataFolderPath);
+                }
             }
-            catch { }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error loading followers_1.json");
+            }
 
             try
             {
@@ -83,8 +105,15 @@ namespace InstagramDataWebApp.Services
                         Following = deserialized;
                     }
                 }
+                else
+                {
+                    _logger.LogWarning("File not found: following.json in {DataFolderPath}", DataFolderPath);
+                }
             }
-            catch { }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error loading following.json");
+            }
 
             try
             {
@@ -98,8 +127,15 @@ namespace InstagramDataWebApp.Services
                         PendingFollowRequests = deserialized;
                     }
                 }
+                else
+                {
+                    _logger.LogWarning("File not found: pending_follow_requests.json in {DataFolderPath}", DataFolderPath);
+                }
             }
-            catch { }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error loading pending_follow_requests.json");
+            }
 
             try
             {
@@ -113,8 +149,15 @@ namespace InstagramDataWebApp.Services
                         RecentFollowRequests = deserialized;
                     }
                 }
+                else
+                {
+                    _logger.LogWarning("File not found: recent_follow_requests.json in {DataFolderPath}", DataFolderPath);
+                }
             }
-            catch { }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error loading recent_follow_requests.json");
+            }
 
             try
             {
@@ -128,8 +171,15 @@ namespace InstagramDataWebApp.Services
                         RecentlyUnfollowed = deserialized;
                     }
                 }
+                else
+                {
+                    _logger.LogWarning("File not found: recently_unfollowed_profiles.json in {DataFolderPath}", DataFolderPath);
+                }
             }
-            catch { }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error loading recently_unfollowed_profiles.json");
+            }
         }
     }
 }

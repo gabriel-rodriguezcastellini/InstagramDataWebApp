@@ -21,4 +21,10 @@ public class HomeController(InstagramDataService dataService) : Controller
 
         return View(dashboard);
     }
+
+    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+    public IActionResult Error()
+    {
+        return View();
+    }
 }
