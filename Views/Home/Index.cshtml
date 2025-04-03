@@ -3,31 +3,37 @@
     ViewData["Title"] = "Dashboard";
 }
 
-<h1>Instagram Data Dashboard</h1>
-<ul>
-    <li>Synced Contacts: @Model.SyncedContactsCount</li>
-    <li>
-        Blocked Users: @Model.BlockedCount -
-        <a href="@Url.Action("Blocked", "InstagramData")">View Blocked Users</a>
-    </li>
-    <li>
-        Followers: @Model.FollowersCount -
-        <a href="@Url.Action("Followers", "InstagramData")">View Followers</a>
-    </li>
-    <li>
-        Following: @Model.FollowingCount -
-        <a href="@Url.Action("Following", "InstagramData")">View Following</a>
-    </li>
-    <li>
-        Pending Follow Requests: @Model.PendingFollowRequestsCount -
-        <a href="@Url.Action("PendingFollowRequests", "InstagramData")">View Pending</a>
-    </li>
-    <li>
-        Recent Follow Requests: @Model.RecentFollowRequestsCount -
-        <a href="@Url.Action("RecentFollowRequests", "InstagramData")">View Recent Requests</a>
-    </li>
-    <li>
-        Recently Unfollowed: @Model.RecentlyUnfollowedCount -
-        <a href="@Url.Action("RecentlyUnfollowed", "InstagramData")">View Recently Unfollowed</a>
-    </li>
-</ul>
+<div class="row">
+    <div class="col">
+        <h2 class="mb-4">Dashboard</h2>
+        <ul class="list-group">
+            <li class="list-group-item">
+                Synced Contacts: @Model.SyncedContactsCount
+            </li>
+            <li class="list-group-item">
+                Blocked Users: @Model.BlockedCount - 
+                <a href="@Url.Action("Blocked", "InstagramData")" class="btn btn-link p-0">View Blocked Users</a>
+            </li>
+            <li class="list-group-item">
+                Followers: @Model.FollowersCount - 
+                <a href="@Url.Action("Followers", "InstagramData")" class="btn btn-link p-0">View Followers</a>
+            </li>
+            <li class="list-group-item">
+                Following: @Model.FollowingCount - 
+                <a href="@Url.Action("Following", "InstagramData")" class="btn btn-link p-0">View Following</a>
+            </li>
+            <li class="list-group-item">
+                Pending Follow Requests: @Model.PendingFollowRequestsCount - 
+                <a href="@Url.Action("PendingFollowRequests", "InstagramData")" class="btn btn-link p-0">View Pending</a>
+            </li>
+            <li class="list-group-item">
+                Recent Follow Requests: @Model.RecentFollowRequestsCount - 
+                <a href="@Url.Action("RecentFollowRequests", "InstagramData")" class="btn btn-link p-0">View Recent Requests</a>
+            </li>
+            <li class="list-group-item">
+                Recently Unfollowed: @Model.RecentlyUnfollowedCount - 
+                <a href="@Url.Action("RecentlyUnfollowed", "InstagramData")" class="btn btn-link p-0">View Recently Unfollowed</a>
+            </li>
+        </ul>
+    </div>
+</div>

@@ -3,28 +3,33 @@
     ViewData["Title"] = "Followers";
 }
 
-<h1>Followers</h1>
-
-<table border="1" cellpadding="5">
-    <thead>
-        <tr>
-            <th>Username</th>
-            <th>Profile Link</th>
-            <th>Timestamp</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            var link = item.StringListData?.FirstOrDefault();
-            if (link != null)
-            {
+<div class="row">
+    <div class="col">
+        <h2 class="mb-4">Followers</h2>
+        <table class="table table-striped">
+            <thead>
                 <tr>
-                    <td>@link.Value</td>
-                    <td><a href="@link.Href" target="_blank">@link.Href</a></td>
-                    <td>@link.Timestamp</td>
+                    <th>Username</th>
+                    <th>Profile Link</th>
+                    <th>Timestamp</th>
                 </tr>
-            }
-        }
-    </tbody>
-</table>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    var link = item.StringListData?.FirstOrDefault();
+                    if (link != null)
+                    {
+                        <tr>
+                            <td>@link.Value</td>
+                            <td>
+                                <a href="@link.Href" target="_blank" class="btn btn-sm btn-outline-primary">Visit</a>
+                            </td>
+                            <td>@link.Timestamp</td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
