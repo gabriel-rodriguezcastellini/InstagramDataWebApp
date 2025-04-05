@@ -5,9 +5,18 @@ namespace InstagramDataWebApp.Controllers
 {
     public class InstagramDataController(InstagramDataService dataService) : Controller
     {
-        public IActionResult Followers()
+        public IActionResult Followers(string searchTerm)
         {
             List<Models.InstagramRelationship> followers = dataService.Followers;
+
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                followers = [.. followers
+                    .Where(f => f.StringListData?.FirstOrDefault()?.Value?
+                        .IndexOf(searchTerm, StringComparison.OrdinalIgnoreCase) >= 0)];
+            }
+
+            ViewBag.SearchTerm = searchTerm;
             return View(followers);
         }
 
