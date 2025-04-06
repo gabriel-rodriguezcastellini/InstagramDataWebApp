@@ -34,6 +34,14 @@
                 Recently Unfollowed: @Model.RecentlyUnfollowedCount - 
                 <a href="@Url.Action("RecentlyUnfollowed", "InstagramData")" class="btn btn-link p-0">View Recently Unfollowed</a>
             </li>
+            <li class="list-group-item">
+                People I Follow Who Don't Follow Me Back -
+                <a href="@Url.Action("FollowingNotFollowingMe", "InstagramData")" class="btn btn-link p-0">View List</a>
+            </li>
+            <li class="list-group-item">
+                People Who Follow Me But I Don't Follow Them Back -
+                <a href="@Url.Action("FollowersNotFollowedByMe", "InstagramData")" class="btn btn-link p-0">View List</a>
+            </li>
         </ul>
     </div>
 </div>

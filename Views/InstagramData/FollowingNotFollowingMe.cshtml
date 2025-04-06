@@ -1,0 +1,40 @@
+﻿@model List<InstagramDataWebApp.Models.InstagramRelationship>
+@{
+    ViewData["Title"] = "Following - Not Following Me Back";
+}
+
+<div class="row">
+    <div class="col">
+        <h2 class="mb-4">People I Follow, Who Don't Follow Me Back</h2>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>Profile Link</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    var link = item.StringListData?.FirstOrDefault();
+                    if (link != null)
+                    {
+                        var formattedDate = link.Timestamp > 0
+                            ? DateTimeOffset.FromUnixTimeSeconds(link.Timestamp)
+                                           .ToLocalTime()
+                                           .ToString("MMM dd, yyyy hh:mm tt")
+                            : "N/A";
+                                <tr>
+                                    <td>@link.Value</td>
+                                    <td>
+                                        <a href="@link.Href" target="_blank" class="btn btn-sm btn-outline-primary">Visit</a>
+                                    </td>
+                                    <td>@formattedDate</td>
+                                </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -1,4 +1,5 @@
-﻿using InstagramDataWebApp.Services;
+﻿using InstagramDataWebApp.Models;
+using InstagramDataWebApp.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace InstagramDataWebApp.Controllers
@@ -48,6 +49,30 @@ namespace InstagramDataWebApp.Controllers
         {
             List<Models.InstagramRelationship>? unfollowed = dataService.RecentlyUnfollowed?.RelationshipsUnfollowedUsers;
             return View(unfollowed);
+        }
+
+        public IActionResult FollowingNotFollowingMe()
+        {
+            List<InstagramRelationship> followingList = dataService.Following.RelationshipsFollowing ?? [];
+            List<InstagramRelationship> followerList = dataService.Followers ?? [];
+
+            List<InstagramRelationship> notFollowingMe = [.. followingList
+                .Where(f => !followerList.Any(r =>
+                    string.Equals(r.StringListData?.FirstOrDefault()?.Value, f.StringListData?.FirstOrDefault()?.Value, StringComparison.OrdinalIgnoreCase)
+                ))];
+            return View(notFollowingMe);
+        }
+
+        public IActionResult FollowersNotFollowedByMe()
+        {
+            List<InstagramRelationship> followingList = dataService.Following.RelationshipsFollowing ?? [];
+            List<InstagramRelationship> followerList = dataService.Followers ?? [];
+
+            List<InstagramRelationship> notFollowedByMe = [.. followerList
+                .Where(r => !followingList.Any(f =>
+                    string.Equals(f.StringListData?.FirstOrDefault()?.Value, r.StringListData?.FirstOrDefault()?.Value, StringComparison.OrdinalIgnoreCase)
+                ))];
+            return View(notFollowedByMe);
         }
     }
 }
