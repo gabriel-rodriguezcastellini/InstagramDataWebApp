@@ -1,11 +1,38 @@
 ﻿@model List<InstagramDataWebApp.Models.InstagramRelationship>
 @{
-    ViewData["Title"] = "Followers - Not Followed Back";
+    ViewData["Title"] = "Following - Not Following Me Back";
 }
 
 <div class="row">
     <div class="col">
-        <h2 class="mb-4">People Who Follow Me, But I Don't Follow Them Back</h2>
+        <h2 class="mb-4">People I Follow, Who Don't Follow Me Back</h2>
+        
+        <form method="get" class="mb-4">
+            <div class="row g-3 align-items-center">
+                <div class="col-auto">
+                    <label for="sortField" class="col-form-label">Sort by:</label>
+                </div>
+                <div class="col-auto">
+                    <select name="sortField" id="sortField" class="form-select">
+                        <option value="username" selected="@(ViewBag.SortField == "username")">Username</option>
+                        <option value="date" selected="@(ViewBag.SortField == "date")">Date</option>
+                    </select>
+                </div>
+                <div class="col-auto">
+                    <label for="sortOrder" class="col-form-label">Order:</label>
+                </div>
+                <div class="col-auto">
+                    <select name="sortOrder" id="sortOrder" class="form-select">
+                        <option value="asc" selected="@(ViewBag.SortOrder == "asc")">Ascending</option>
+                        <option value="desc" selected="@(ViewBag.SortOrder == "desc")">Descending</option>
+                    </select>
+                </div>
+                <div class="col-auto">
+                    <button type="submit" class="btn btn-primary">Sort</button>
+                </div>
+            </div>
+        </form>
+        
         <table class="table table-striped">
             <thead>
                 <tr>
@@ -20,11 +47,11 @@
                     var link = item.StringListData?.FirstOrDefault();
                     if (link != null)
                     {
-                        var formattedDate = link.Timestamp > 0
-                        ? DateTimeOffset.FromUnixTimeSeconds(link.Timestamp)
-                        .ToLocalTime()
-                        .ToString("MMM dd, yyyy hh:mm tt")
-                        : "N/A";
+                        var formattedDate = link.Timestamp > 0 
+                            ? DateTimeOffset.FromUnixTimeSeconds(link.Timestamp)
+                                           .ToLocalTime()
+                                           .ToString("MMM dd, yyyy hh:mm tt")
+                            : "N/A";
                         <tr>
                             <td>@link.Value</td>
                             <td>

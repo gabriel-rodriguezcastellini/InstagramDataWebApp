@@ -51,7 +51,7 @@ namespace InstagramDataWebApp.Controllers
             return View(unfollowed);
         }
 
-        public IActionResult FollowingNotFollowingMe()
+        public IActionResult FollowingNotFollowingMe(string sortField = "username", string sortOrder = "asc")
         {
             List<InstagramRelationship> followingList = dataService.Following.RelationshipsFollowing ?? [];
             List<InstagramRelationship> followerList = dataService.Followers ?? [];
@@ -60,10 +60,25 @@ namespace InstagramDataWebApp.Controllers
                 .Where(f => !followerList.Any(r =>
                     string.Equals(r.StringListData?.FirstOrDefault()?.Value, f.StringListData?.FirstOrDefault()?.Value, StringComparison.OrdinalIgnoreCase)
                 ))];
+
+            notFollowingMe = sortField.ToLower() switch
+            {
+                "date" => sortOrder.Equals("desc", StringComparison.CurrentCultureIgnoreCase) ?
+                    [.. notFollowingMe.OrderByDescending(x => x.StringListData?.FirstOrDefault()?.Timestamp)] :
+                    [.. notFollowingMe.OrderBy(x => x.StringListData?.FirstOrDefault()?.Timestamp)],
+                _ =>
+                    sortOrder.Equals("desc", StringComparison.CurrentCultureIgnoreCase) ?
+                    [.. notFollowingMe.OrderByDescending(x => x.StringListData?.FirstOrDefault()?.Value)] :
+                    [.. notFollowingMe.OrderBy(x => x.StringListData?.FirstOrDefault()?.Value)]
+            };
+
+            ViewBag.SortField = sortField;
+            ViewBag.SortOrder = sortOrder;
+
             return View(notFollowingMe);
         }
 
-        public IActionResult FollowersNotFollowedByMe()
+        public IActionResult FollowersNotFollowedByMe(string sortField = "username", string sortOrder = "asc")
         {
             List<InstagramRelationship> followingList = dataService.Following.RelationshipsFollowing ?? [];
             List<InstagramRelationship> followerList = dataService.Followers ?? [];
@@ -72,6 +87,21 @@ namespace InstagramDataWebApp.Controllers
                 .Where(r => !followingList.Any(f =>
                     string.Equals(f.StringListData?.FirstOrDefault()?.Value, r.StringListData?.FirstOrDefault()?.Value, StringComparison.OrdinalIgnoreCase)
                 ))];
+
+            notFollowedByMe = sortField.ToLower() switch
+            {
+                "date" => sortOrder.Equals("desc", StringComparison.CurrentCultureIgnoreCase) ?
+                    [.. notFollowedByMe.OrderByDescending(x => x.StringListData?.FirstOrDefault()?.Timestamp)] :
+                    [.. notFollowedByMe.OrderBy(x => x.StringListData?.FirstOrDefault()?.Timestamp)],
+                _ =>
+                    sortOrder.Equals("desc", StringComparison.CurrentCultureIgnoreCase) ?
+                    [.. notFollowedByMe.OrderByDescending(x => x.StringListData?.FirstOrDefault()?.Value)] :
+                    [.. notFollowedByMe.OrderBy(x => x.StringListData?.FirstOrDefault()?.Value)]
+            };
+
+            ViewBag.SortField = sortField;
+            ViewBag.SortOrder = sortOrder;
+
             return View(notFollowedByMe);
         }
     }
