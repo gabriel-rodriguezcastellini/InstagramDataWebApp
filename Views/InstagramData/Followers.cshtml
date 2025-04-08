@@ -1,4 +1,6 @@
-﻿@model List<InstagramDataWebApp.Models.InstagramRelationship>
+﻿@using X.PagedList
+@using X.PagedList.Mvc.Core
+@model IPagedList<InstagramDataWebApp.Models.InstagramRelationship>
 @{
     ViewData["Title"] = "Followers";
 }
@@ -44,5 +46,16 @@
                 }
             </tbody>
         </table>
+
+        <div class="d-flex justify-content-center">
+            @Html.PagedListPager(Model, page => Url.Action("Followers", new { page, searchTerm = ViewBag.SearchTerm }), new PagedListRenderOptions
+       {
+           DisplayLinkToFirstPage = PagedListDisplayMode.Always,
+           DisplayLinkToLastPage = PagedListDisplayMode.Always,
+           DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
+           DisplayLinkToNextPage = PagedListDisplayMode.Always,
+           MaximumPageNumbersToDisplay = 5
+       })
+        </div>
     </div>
 </div>

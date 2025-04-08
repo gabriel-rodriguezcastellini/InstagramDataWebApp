@@ -1,14 +1,15 @@
 ﻿using InstagramDataWebApp.Models;
 using InstagramDataWebApp.Services;
 using Microsoft.AspNetCore.Mvc;
+using X.PagedList.Extensions;
 
 namespace InstagramDataWebApp.Controllers
 {
     public class InstagramDataController(InstagramDataService dataService) : Controller
     {
-        public IActionResult Followers(string searchTerm)
+        public IActionResult Followers(string searchTerm, int? page)
         {
-            List<Models.InstagramRelationship> followers = dataService.Followers;
+            List<InstagramRelationship> followers = dataService.Followers ?? [];
 
             if (!string.IsNullOrEmpty(searchTerm))
             {
@@ -17,37 +18,43 @@ namespace InstagramDataWebApp.Controllers
                         .IndexOf(searchTerm, StringComparison.OrdinalIgnoreCase) >= 0)];
             }
 
+            int pageNumber = page ?? 1;
+            int pageSize = 10;
+
+            X.PagedList.IPagedList<InstagramRelationship> pagedFollowers = followers.ToPagedList(pageNumber, pageSize);
+
             ViewBag.SearchTerm = searchTerm;
-            return View(followers);
+
+            return View(pagedFollowers);
         }
 
         public IActionResult Following()
         {
-            List<Models.InstagramRelationship>? following = dataService.Following?.RelationshipsFollowing;
+            List<InstagramRelationship>? following = dataService.Following?.RelationshipsFollowing;
             return View(following);
         }
 
         public IActionResult Blocked()
         {
-            List<Models.BlockedProfile>? blocked = dataService.BlockedProfiles?.RelationshipsBlockedUsers;
+            List<BlockedProfile>? blocked = dataService.BlockedProfiles?.RelationshipsBlockedUsers;
             return View(blocked);
         }
 
         public IActionResult PendingFollowRequests()
         {
-            List<Models.InstagramRelationship>? pending = dataService.PendingFollowRequests?.RelationshipsFollowRequestsSent;
+            List<InstagramRelationship>? pending = dataService.PendingFollowRequests?.RelationshipsFollowRequestsSent;
             return View(pending);
         }
 
         public IActionResult RecentFollowRequests()
         {
-            List<Models.InstagramRelationship>? recent = dataService.RecentFollowRequests?.RelationshipsPermanentFollowRequests;
+            List<InstagramRelationship>? recent = dataService.RecentFollowRequests?.RelationshipsPermanentFollowRequests;
             return View(recent);
         }
 
         public IActionResult RecentlyUnfollowed()
         {
-            List<Models.InstagramRelationship>? unfollowed = dataService.RecentlyUnfollowed?.RelationshipsUnfollowedUsers;
+            List<InstagramRelationship>? unfollowed = dataService.RecentlyUnfollowed?.RelationshipsUnfollowedUsers;
             return View(unfollowed);
         }
 
