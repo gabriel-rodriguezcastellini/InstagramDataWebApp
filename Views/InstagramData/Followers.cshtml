@@ -48,14 +48,30 @@
         </table>
 
         <div class="d-flex justify-content-center">
-            @Html.PagedListPager(Model, page => Url.Action("Followers", new { page, searchTerm = ViewBag.SearchTerm }), new PagedListRenderOptions
-       {
-           DisplayLinkToFirstPage = PagedListDisplayMode.Always,
-           DisplayLinkToLastPage = PagedListDisplayMode.Always,
-           DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
-           DisplayLinkToNextPage = PagedListDisplayMode.Always,
-           MaximumPageNumbersToDisplay = 5
-       })
+            @Html.PagedListPager(
+                     Model,
+                     page => Url.Action("Followers", new { page, searchTerm = ViewBag.SearchTerm }),
+                     new PagedListRenderOptions
+            {
+                UlElementClasses = new[] { "pagination" },
+                LiElementClasses = new[] { "page-item" },
+                PageClasses = new[] { "page-link" },
+
+                LinkToFirstPageFormat = "«",
+                LinkToPreviousPageFormat = "‹",
+                LinkToNextPageFormat = "›",
+                LinkToLastPageFormat = "»",
+
+                EllipsesFormat = "…",
+
+                DisplayLinkToFirstPage = PagedListDisplayMode.Always,
+                DisplayLinkToLastPage = PagedListDisplayMode.Always,
+                DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
+                DisplayLinkToNextPage = PagedListDisplayMode.Always,
+                DisplayLinkToIndividualPages = true,
+                MaximumPageNumbersToDisplay = 5
+            }
+                     )
         </div>
     </div>
 </div>
