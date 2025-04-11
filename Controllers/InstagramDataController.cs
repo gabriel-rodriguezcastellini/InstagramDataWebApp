@@ -20,12 +20,11 @@ namespace InstagramDataWebApp.Controllers
 
             int pageNumber = page ?? 1;
             int pageSize = 10;
-
             X.PagedList.IPagedList<InstagramRelationship> pagedFollowers = followers.ToPagedList(pageNumber, pageSize);
 
             ViewBag.SearchTerm = searchTerm;
 
-            return View(pagedFollowers);
+            return Request.Headers.XRequestedWith == "XMLHttpRequest" ? PartialView("_FollowersList", pagedFollowers) : View(pagedFollowers);
         }
 
         public IActionResult Following()

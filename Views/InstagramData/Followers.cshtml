@@ -1,77 +1,54 @@
 ﻿@using X.PagedList
-@using X.PagedList.Mvc.Core
-@model IPagedList<InstagramDataWebApp.Models.InstagramRelationship>
+@model X.PagedList.IPagedList<InstagramDataWebApp.Models.InstagramRelationship>
 @{
     ViewData["Title"] = "Followers";
 }
-
 <div class="row">
     <div class="col">
         <h2 class="mb-4">Followers</h2>
 
-        <form method="get" class="mb-4">
+        <form id="searchForm" method="get" class="mb-4">
             <div class="input-group">
                 <input type="text" name="searchTerm" value="@ViewBag.SearchTerm" class="form-control" placeholder="Search followers by username..." />
                 <button type="submit" class="btn btn-primary">Search</button>
             </div>
         </form>
 
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>Username</th>
-                    <th>Profile Link</th>
-                    <th>Date</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
-                    var link = item.StringListData?.FirstOrDefault();
-                    if (link != null)
-                    {
-                        var formattedDate = link.Timestamp > 0
-                        ? DateTimeOffset.FromUnixTimeSeconds(link.Timestamp)
-                        .ToLocalTime()
-                        .ToString("MMM dd, yyyy hh:mm tt")
-                        : "N/A";
-                        <tr>
-                            <td>@link.Value</td>
-                            <td>
-                                <a href="@link.Href" target="_blank" class="btn btn-sm btn-outline-primary">Visit</a>
-                            </td>
-                            <td>@formattedDate</td>
-                        </tr>
-                    }
-                }
-            </tbody>
-        </table>
-
-        <div class="d-flex justify-content-center">
-            @Html.PagedListPager(
-                     Model,
-                     page => Url.Action("Followers", new { page, searchTerm = ViewBag.SearchTerm }),
-                     new PagedListRenderOptions
-            {
-                UlElementClasses = new[] { "pagination" },
-                LiElementClasses = new[] { "page-item" },
-                PageClasses = new[] { "page-link" },
-
-                LinkToFirstPageFormat = "«",
-                LinkToPreviousPageFormat = "‹",
-                LinkToNextPageFormat = "›",
-                LinkToLastPageFormat = "»",
-
-                EllipsesFormat = "…",
-
-                DisplayLinkToFirstPage = PagedListDisplayMode.Always,
-                DisplayLinkToLastPage = PagedListDisplayMode.Always,
-                DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
-                DisplayLinkToNextPage = PagedListDisplayMode.Always,
-                DisplayLinkToIndividualPages = true,
-                MaximumPageNumbersToDisplay = 5
-            }
-                     )
+        <div id="followersContainer">
+            <partial name="_FollowersList" model="Model" />
         </div>
+
     </div>
 </div>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(function() {
+            $('#searchForm').submit(function (e) {
+                e.preventDefault();
+                loadFollowers($(this).serialize());
+            });
+
+            $('#followersContainer').on('click', '.pagination a', function (e) {                
+                e.preventDefault();
+                var query = $(this).attr('href').split('?')[1];
+                loadFollowers(query);
+            });
+
+            function loadFollowers(query) {
+                $.ajax({
+                    url: '@Url.Action("Followers", "InstagramData")',
+                    data: query,
+                    type: 'GET',
+                    success: function(result) {
+                        $('#followersContainer').html(result);
+                    },
+                    error: function(xhr, status, error) {
+                        alert("Error loading data: " + error);
+                    }
+                });
+            }
+        });
+    </script>
+}

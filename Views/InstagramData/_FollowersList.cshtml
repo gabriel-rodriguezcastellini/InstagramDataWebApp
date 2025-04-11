@@ -1,0 +1,55 @@
+﻿@model X.PagedList.IPagedList<InstagramDataWebApp.Models.InstagramRelationship>
+@using X.PagedList.Mvc.Core
+
+<div>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Username</th>
+                <th>Profile Link</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                var link = item.StringListData?.FirstOrDefault();
+                if (link != null)
+                {
+                    var formattedDate = link.Timestamp > 0
+                    ? DateTimeOffset.FromUnixTimeSeconds(link.Timestamp)
+                    .ToLocalTime()
+                    .ToString("MMM dd, yyyy hh:mm tt")
+                    : "N/A";
+                    <tr>
+                        <td>@link.Value</td>
+                        <td>
+                            <a href="@link.Href" target="_blank" class="btn btn-sm btn-outline-primary">Visit</a>
+                        </td>
+                        <td>@formattedDate</td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+
+    <div class="d-flex justify-content-center">
+        @Html.PagedListPager(Model, page => Url.Action("Followers", new { page, searchTerm = ViewBag.SearchTerm }), new PagedListRenderOptions
+   {
+       UlElementClasses = new[] { "pagination" },
+       LiElementClasses = new[] { "page-item" },
+       PageClasses = new[] { "page-link" },
+       LinkToFirstPageFormat = "«",
+       LinkToPreviousPageFormat = "‹",
+       LinkToNextPageFormat = "›",
+       LinkToLastPageFormat = "»",
+       EllipsesFormat = "…",
+       DisplayLinkToFirstPage = PagedListDisplayMode.Always,
+       DisplayLinkToLastPage = PagedListDisplayMode.Always,
+       DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
+       DisplayLinkToNextPage = PagedListDisplayMode.Always,
+       DisplayLinkToIndividualPages = true,
+       MaximumPageNumbersToDisplay = 5
+   })
+    </div>
+</div>
