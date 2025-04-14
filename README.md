@@ -1,3 +1,5 @@
+[![.NET](https://github.com/gabriel-rodriguezcastellini/InstagramDataWebApp/actions/workflows/dotnet.yml/badge.svg)](https://github.com/gabriel-rodriguezcastellini/InstagramDataWebApp/actions/workflows/dotnet.yml)
+
 # Instagram Data Web App
 
 A .NET 9 ASP.NET Core MVC application that reads and displays Instagram export JSON data. The application features dynamic list updates using AJAX, pagination using X.PagedList, sorting and filtering options.
